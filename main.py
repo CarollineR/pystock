@@ -1,3 +1,5 @@
+produtos = [ ]
+
 def exibir_nome_do_programa():
     print("""
 ====================
@@ -14,10 +16,25 @@ def exibir_opcoes():
     print('5. Sair')
 
 def cadastrar_produto():
-    print('Cadastrando')
+    nome = input('Digite o nome do produto: ')
+    quantidade = int(input('Digite a quantidade disponível: '))
+    produto = {
+        "nome": nome,
+        "quantidade": quantidade
+    }
+    produtos.append(produto)
+    print(f"Produto {nome} cadastrado com sucesso!")
+    voltar_ao_menu()
 
 def listar_produtos():
-    print('Listando Produtos')
+    if len(produtos) == 0:
+        print('Nenhum produto cadastrado.')
+        return
+    for produto in produtos:
+        print("\n Produtos cadastrados:\n")
+        print(f"\n Nome: {produto['nome']} | Quantidade: {produto['quantidade']}")
+        voltar_ao_menu()
+    
 
 def entrada_de_estoque():
     print('Entrada de Estoque')
