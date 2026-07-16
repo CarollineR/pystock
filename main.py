@@ -34,6 +34,7 @@ def cadastrar_produto():
     }
     produtos.append(produto)
     print(f"Produto {nome} cadastrado com sucesso!")
+    salvar_produtos()
     voltar_ao_menu()
 
 
@@ -57,6 +58,7 @@ def entrada_de_estoque():
         if produto["nome"] == nome:
             quantidade = int(input("Quantidade: "))
             produto ["quantidade"] += quantidade
+            salvar_produtos()
             print("Estoque atualizado!")
             voltar_ao_menu()
             return
@@ -77,6 +79,7 @@ def saida_de_estoque():
                 print("Estoque insuficiente")
             else:
                 produto["quantidade"] -= quantidade
+                salvar_produtos()
                 print("Saída realizada")
                 print(f"Estoque de {produto['nome']} é de {produto['quantidade']} unidade(s)")
 
@@ -87,7 +90,9 @@ def saida_de_estoque():
     voltar_ao_menu()
 
 def salvar_produtos():
-    pass
+    with open("produtos.json", "w") as arquivo_json:
+        json.dump(produtos, arquivo_json, indent=4)
+
 
 def sair():
     print('Encerrando...')
@@ -137,10 +142,6 @@ if __name__ == "__main__":
     main()
 
 
-
-
-
-    
     
 
 
