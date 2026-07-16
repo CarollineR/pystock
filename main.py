@@ -1,4 +1,13 @@
+import json
+
 produtos = [ ]
+
+def carregar_produtos():
+   global produtos
+
+   with open("produtos.json", "r") as arquivo_json:
+       produtos = json.load(arquivo_json)
+
 
 def exibir_nome_do_programa():
     print("""
@@ -15,6 +24,7 @@ def exibir_opcoes():
     print('4. Saída de Estoque')
     print('5. Sair')
 
+
 def cadastrar_produto():
     nome = input('Digite o nome do produto: ')
     quantidade = int(input('Digite a quantidade disponível: '))
@@ -26,24 +36,61 @@ def cadastrar_produto():
     print(f"Produto {nome} cadastrado com sucesso!")
     voltar_ao_menu()
 
+
 def listar_produtos():
     if len(produtos) == 0:
         print('Nenhum produto cadastrado.')
         return
+    
+    print("\n Produtos cadastrados:\n")
+
     for produto in produtos:
-        print("\n Produtos cadastrados:\n")
         print(f"\n Nome: {produto['nome']} | Quantidade: {produto['quantidade']}")
-        voltar_ao_menu()
+    voltar_ao_menu()
     
 
 def entrada_de_estoque():
-    print('Entrada de Estoque')
+    nome = input("Produto: ")
+
+    for produto in produtos:
+
+        if produto["nome"] == nome:
+            quantidade = int(input("Quantidade: "))
+            produto ["quantidade"] += quantidade
+            print("Estoque atualizado!")
+            voltar_ao_menu()
+            return
+        
+    print("Produto não encontrado.")
+    voltar_ao_menu()
+    
 
 def saida_de_estoque():
-    print('Saída de Estoque')
+    nome = input("Produto: ")
+
+    for produto in produtos:
+
+        if produto["nome"] == nome:
+            quantidade = int(input("Digite a quantidade que deseja retirar: "))
+
+            if produto["quantidade"] < quantidade:
+                print("Estoque insuficiente")
+            else:
+                produto["quantidade"] -= quantidade
+                print("Saída realizada")
+                print(f"Estoque de {produto['nome']} é de {produto['quantidade']} unidade(s)")
+
+            voltar_ao_menu()
+            return
+
+    print("Produto não encontrado.")
+    voltar_ao_menu()
+
+def salvar_produtos():
+    pass
 
 def sair():
-    print('Saindo')
+    print('Encerrando...')
 
 def opcao_invalida():
     print('Opção inválida\n!')
@@ -53,27 +100,38 @@ def voltar_ao_menu():
 
 
 def escolher_opcoes():
-    opcao = int(input('Digite a opção desejada: '))
+    opcao = int(input("Digite a opção desejada: "))
     if opcao == 1:
         cadastrar_produto()
+        return True
     elif opcao == 2:
         listar_produtos()
+        return True
     elif opcao == 3:
         entrada_de_estoque()
+        return True
     elif opcao == 4:
         saida_de_estoque()
+        return True
     elif opcao == 5:
         sair()
+        return False
     else:
         opcao_invalida()
         voltar_ao_menu()
+        return True
 
 
 def main():
+    carregar_produtos()
     exibir_nome_do_programa()
     while True: 
         exibir_opcoes()
-        escolher_opcoes()
+
+        continuar = escolher_opcoes()
+        
+        if not continuar:
+            break
 
 if __name__ == "__main__":
     main()
