@@ -6,5 +6,9 @@
     {
         "nome": "Teclado",
         "quantidade": 2
+    },
+    {
+        "nome": "Mouse",
+        "quantidade": 4
     }
 ]

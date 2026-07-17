@@ -5,8 +5,12 @@ produtos = [ ]
 def carregar_produtos():
    global produtos
 
-   with open("produtos.json", "r") as arquivo_json:
-       produtos = json.load(arquivo_json)
+   try:
+       with open("produtos.json", "r") as arquivo_json:
+           produtos = json.load(arquivo_json)
+    
+   except FileNotFoundError:
+       produtos = []
 
 
 def exibir_nome_do_programa():
@@ -26,15 +30,23 @@ def exibir_opcoes():
 
 
 def cadastrar_produto():
-    nome = input('Digite o nome do produto: ')
-    quantidade = int(input('Digite a quantidade disponível: '))
+    nome = input("Digite o nome do produto: ").strip().title()
+
+    for produto in produtos:
+        if produto["nome"].lower() == nome.lower():
+            print("Este produto já existe.")
+            voltar_ao_menu()
+            return
+        
+    quantidade = int(input("Digite a quantidade disponível: "))
+
     produto = {
         "nome": nome,
         "quantidade": quantidade
     }
     produtos.append(produto)
-    print(f"Produto {nome} cadastrado com sucesso!")
     salvar_produtos()
+    print(f"Produto {nome} cadastrado com sucesso!")
     voltar_ao_menu()
 
 
@@ -51,13 +63,13 @@ def listar_produtos():
     
 
 def entrada_de_estoque():
-    nome = input("Produto: ")
+    nome = input("Produto: ").strip()
 
     for produto in produtos:
 
-        if produto["nome"] == nome:
+        if produto["nome"].lower() == nome.lower():
             quantidade = int(input("Quantidade: "))
-            produto ["quantidade"] += quantidade
+            produto["quantidade"] += quantidade
             salvar_produtos()
             print("Estoque atualizado!")
             voltar_ao_menu()
@@ -68,11 +80,11 @@ def entrada_de_estoque():
     
 
 def saida_de_estoque():
-    nome = input("Produto: ")
+    nome = input("Produto: ").strip()
 
     for produto in produtos:
 
-        if produto["nome"] == nome:
+        if produto["nome"].lower() == nome.lower():
             quantidade = int(input("Digite a quantidade que deseja retirar: "))
 
             if produto["quantidade"] < quantidade:
@@ -91,7 +103,7 @@ def saida_de_estoque():
 
 def salvar_produtos():
     with open("produtos.json", "w") as arquivo_json:
-        json.dump(produtos, arquivo_json, indent=4)
+        json.dump(produtos, arquivo_json, indent=4, ensure_ascii=False)
 
 
 def sair():
