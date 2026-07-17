@@ -2,6 +2,9 @@ import json
 
 produtos = [ ]
 
+
+# FUNÇÕES AUXILIARES
+
 def carregar_produtos():
    global produtos
 
@@ -12,6 +15,25 @@ def carregar_produtos():
    except FileNotFoundError:
        produtos = []
 
+
+def salvar_produtos():
+    with open("produtos.json", "w") as arquivo_json:
+        json.dump(produtos, arquivo_json, indent=4, ensure_ascii=False)
+
+
+def ler_inteiro(mensagem):
+    while True:
+        valor = input(mensagem)
+        
+        try:
+            valor = int(valor)
+            return valor
+
+        except ValueError:
+            print("Digite um número válido.")
+
+
+# FUNÇÕES DE APRESENTAÇÃO
 
 def exibir_nome_do_programa():
     print("""
@@ -30,6 +52,20 @@ def exibir_opcoes():
     print("6. Sair")
 
 
+def voltar_ao_menu():
+    input("\nDigite uma tecla para voltar ao menu principal: ")
+
+
+def sair():
+    print("Encerrando...")
+
+
+def opcao_invalida():
+    print("Opção inválida!")
+
+
+# FUNCIONALIDADES DO ESTOQUE
+
 def cadastrar_produto():
     nome = input("Digite o nome do produto: ").strip().title()
 
@@ -39,7 +75,7 @@ def cadastrar_produto():
             voltar_ao_menu()
             return
         
-    quantidade = int(input("Digite a quantidade disponível: "))
+    quantidade = ler_inteiro("Digite a quantidade disponível: ")
 
     produto = {
         "nome": nome,
@@ -52,7 +88,7 @@ def cadastrar_produto():
 
 
 def listar_produtos():
-    if len(produtos) == 0:
+    if not produtos:
         print("Nenhum produto cadastrado.")
         voltar_ao_menu()
         return
@@ -60,7 +96,7 @@ def listar_produtos():
     print("\n Produtos cadastrados:\n")
 
     for produto in produtos:
-        print(f"\n Nome: {produto["nome"]} | Quantidade: {produto["quantidade"]}")
+        print(f"\n Nome: {produto['nome']} | Quantidade: {produto['quantidade']}")
     voltar_ao_menu()
     
 
@@ -70,7 +106,7 @@ def entrada_de_estoque():
     for produto in produtos:
 
         if produto["nome"].lower() == nome.lower():
-            quantidade = int(input("Quantidade: "))
+            quantidade = ler_inteiro("Quantidade: ")
             produto["quantidade"] += quantidade
             salvar_produtos()
             print("Estoque atualizado!")
@@ -87,7 +123,7 @@ def saida_de_estoque():
     for produto in produtos:
 
         if produto["nome"].lower() == nome.lower():
-            quantidade = int(input("Digite a quantidade que deseja retirar: "))
+            quantidade = ler_inteiro("Digite a quantidade que deseja retirar: ")
 
             if produto["quantidade"] < quantidade:
                 print("Estoque insuficiente")
@@ -95,7 +131,7 @@ def saida_de_estoque():
                 produto["quantidade"] -= quantidade
                 salvar_produtos()
                 print("Saída de estoque realizada com sucesso!")
-                print(f"Estoque atual de {produto["nome"]}: {produto["quantidade"]} unidade(s).")
+                print(f"Estoque atual de {produto['nome']}: {produto['quantidade']} unidade(s).")
 
             voltar_ao_menu()
             return
@@ -119,23 +155,10 @@ def excluir_produto():
     voltar_ao_menu()
 
 
-def salvar_produtos():
-    with open("produtos.json", "w") as arquivo_json:
-        json.dump(produtos, arquivo_json, indent=4, ensure_ascii=False)
-
-
-def sair():
-    print("Encerrando...")
-
-def opcao_invalida():
-    print("Opção inválida\n!")
-
-def voltar_ao_menu():
-    input("\nDigite uma tecla para voltar ao menu principal: ")
-
+# CONTROLE DO MENU
 
 def escolher_opcoes():
-    opcao = int(input("Digite a opção desejada: "))
+    opcao = ler_inteiro("Digite a opção desejada: ")
     if opcao == 1:
         cadastrar_produto()
         return True
