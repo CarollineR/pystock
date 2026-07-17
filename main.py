@@ -22,11 +22,12 @@ def exibir_nome_do_programa():
 
 
 def exibir_opcoes():
-    print('1. Cadastrar Produto')
-    print('2. Listar Produtos')
-    print('3. Entrada de Estoque')
-    print('4. Saída de Estoque')
-    print('5. Sair')
+    print("1. Cadastrar Produto")
+    print("2. Listar Produtos")
+    print("3. Entrada de Estoque")
+    print("4. Saída de Estoque")
+    print("5. Excluir Produto")
+    print("6. Sair")
 
 
 def cadastrar_produto():
@@ -52,13 +53,14 @@ def cadastrar_produto():
 
 def listar_produtos():
     if len(produtos) == 0:
-        print('Nenhum produto cadastrado.')
+        print("Nenhum produto cadastrado.")
+        voltar_ao_menu()
         return
     
     print("\n Produtos cadastrados:\n")
 
     for produto in produtos:
-        print(f"\n Nome: {produto['nome']} | Quantidade: {produto['quantidade']}")
+        print(f"\n Nome: {produto["nome"]} | Quantidade: {produto["quantidade"]}")
     voltar_ao_menu()
     
 
@@ -92,8 +94,8 @@ def saida_de_estoque():
             else:
                 produto["quantidade"] -= quantidade
                 salvar_produtos()
-                print("Saída realizada")
-                print(f"Estoque de {produto['nome']} é de {produto['quantidade']} unidade(s)")
+                print("Saída de estoque realizada com sucesso!")
+                print(f"Estoque atual de {produto["nome"]}: {produto["quantidade"]} unidade(s).")
 
             voltar_ao_menu()
             return
@@ -101,19 +103,35 @@ def saida_de_estoque():
     print("Produto não encontrado.")
     voltar_ao_menu()
 
+def excluir_produto():
+    nome = input("Digite o nome do produto: ").strip()
+
+    for produto in produtos:
+
+        if produto["nome"].lower() == nome.lower():
+            produtos.remove(produto)
+            salvar_produtos()
+            print("Produto excluído com sucesso!")
+            voltar_ao_menu()
+            return
+        
+    print("Produto não encontrado.")
+    voltar_ao_menu()
+
+
 def salvar_produtos():
     with open("produtos.json", "w") as arquivo_json:
         json.dump(produtos, arquivo_json, indent=4, ensure_ascii=False)
 
 
 def sair():
-    print('Encerrando...')
+    print("Encerrando...")
 
 def opcao_invalida():
-    print('Opção inválida\n!')
+    print("Opção inválida\n!")
 
 def voltar_ao_menu():
-    input('\nDigite uma tecla para voltar ao menu principal: ')
+    input("\nDigite uma tecla para voltar ao menu principal: ")
 
 
 def escolher_opcoes():
@@ -131,6 +149,9 @@ def escolher_opcoes():
         saida_de_estoque()
         return True
     elif opcao == 5:
+        excluir_produto()
+        return True
+    elif opcao == 6:
         sair()
         return False
     else:
