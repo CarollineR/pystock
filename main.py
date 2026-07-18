@@ -48,7 +48,6 @@ def ler_inteiro_positivo(mensagem):
         return valor
 
 
-
 def ler_texto(mensagem):
     while True:
         valor = input(mensagem).strip()
@@ -57,6 +56,19 @@ def ler_texto(mensagem):
             return valor.title()
         
         print("O campo não pode ficar vazio")
+
+
+def deseja_repetir(mensagem):
+    while True:
+        resposta = input(mensagem).strip().lower()
+
+        if resposta == "s":
+            return True
+        
+        if resposta == "n":
+            return False
+        
+        print("Digite apenas 's' ou 'n'.")
 
 
 # FUNÇÕES DE APRESENTAÇÃO
@@ -94,24 +106,29 @@ def opcao_invalida():
 # FUNCIONALIDADES DO ESTOQUE
 
 def cadastrar_produto():
-    nome = ler_texto("Digite o nome do produto: ")
+   while True:
+        nome = ler_texto("Digite o nome do produto: ")
 
-    for produto in produtos:
-        if produto["nome"].lower() == nome.lower():
-            print("Este produto já existe.")
-            voltar_ao_menu()
-            return
+        for produto in produtos:
+            if produto["nome"].lower() == nome.lower():
+                print("Este produto já existe.")
+                voltar_ao_menu()
+                return
         
-    quantidade = ler_inteiro("Digite a quantidade disponível: ")
+        quantidade = ler_inteiro("Digite a quantidade disponível: ")
 
-    produto = {
-        "nome": nome,
-        "quantidade": quantidade
+        produto = {
+            "nome": nome,
+            "quantidade": quantidade
     }
-    produtos.append(produto)
-    salvar_produtos()
-    print(f"Produto {nome} cadastrado com sucesso!")
-    voltar_ao_menu()
+        
+        produtos.append(produto)
+        salvar_produtos()
+        print(f"Produto {nome} cadastrado com sucesso!")
+
+        if not deseja_repetir("\nDeseja cadastrar outro produto? (s/n): "):
+            voltar_ao_menu() 
+            return   
 
 
 def listar_produtos():
@@ -149,70 +166,106 @@ def buscar_produto():
     
 
 def entrada_de_estoque():
-    nome = input("Produto: ").strip()
+    while True:
+        nome = ler_texto("Produto: ")
+        encontrado = False
 
-    for produto in produtos:
+        for produto in produtos:
 
-        if produto["nome"].lower() == nome.lower():
-            quantidade = ler_inteiro_positivo("Quantidade: ")
-            produto["quantidade"] += quantidade
-            salvar_produtos()
-            print("Estoque atualizado!")
-            print(f"Estoque atual de {produto['nome']}: {produto['quantidade']} unidade(s).")
-            voltar_ao_menu()
-            return
-        
-    print("Produto não encontrado.")
-    voltar_ao_menu()
-    
+            if produto["nome"].lower() == nome.lower():
+                encontrado = True
 
-def saida_de_estoque():
-    nome = input("Produto: ").strip()
-
-    for produto in produtos:
-
-        if produto["nome"].lower() == nome.lower():
-            quantidade = ler_inteiro_positivo("Digite a quantidade que deseja retirar: ")
-
-            if produto["quantidade"] < quantidade:
-                print("Estoque insuficiente")
-            else:
-                produto["quantidade"] -= quantidade
+                quantidade = ler_inteiro_positivo("Quantidade: ")
+                produto["quantidade"] += quantidade
                 salvar_produtos()
-                print("Saída de estoque realizada com sucesso!")
+
+                print("Entrada de estoque realizada com sucesso!")
                 print(f"Estoque atual de {produto['nome']}: {produto['quantidade']} unidade(s).")
 
-            voltar_ao_menu()
-            return
+                if not deseja_repetir("\nDeseja registrar outra entrada? (s/n): "):
+                    voltar_ao_menu()
+                    return
+            
+                break
 
-    print("Produto não encontrado.")
-    voltar_ao_menu()
+        if not encontrado:
+            print("Produto não encontrado.")
+
+            if not deseja_repetir("\nDeseja tentar outro produto? (s/n): "):
+                voltar_ao_menu()
+                return
+        
+
+def saida_de_estoque():
+    while True:
+        nome = ler_texto("Produto: ")
+        encontrado = False
+
+        for produto in produtos:
+
+            if produto["nome"].lower() == nome.lower():
+                encontrado = True
+
+                quantidade = ler_inteiro_positivo("Digite a quantidade que deseja retirar: ")
+
+                if produto["quantidade"] < quantidade:
+                    print("Estoque insuficiente.")
+                else:
+                    produto["quantidade"] -= quantidade
+                    salvar_produtos()
+
+                    print("Saída de estoque realizada com sucesso!")
+                    print(f"Estoque atual de {produto['nome']}: {produto['quantidade']} unidade(s).")
+
+                if not deseja_repetir("\nDeseja registrar outra saída? (s/n): "):
+                    voltar_ao_menu()
+                    return
+                
+                break
+
+        if not encontrado:
+            print("Produto não encontrado.")
+
+            if not deseja_repetir("\nDeseja tentar outro produto? (s/n): "):
+                voltar_ao_menu()
+                return
+
 
 def excluir_produto():
-    nome = input("Digite o nome do produto: ").strip()
+   while True:
+        nome = ler_texto("Digite o nome do produto: ")
+        encontrado = False
 
-    for produto in produtos:
+        for produto in produtos:
 
-        if produto["nome"].lower() == nome.lower():
+            if produto["nome"].lower() == nome.lower():
+                encontrado = True
 
-            print("\nProduto encontrado: ")
-            print(f"Nome: {produto['nome']} | Quantidade: {produto['quantidade']}")
+                print("\nProduto encontrado:")
+                print(f"Nome: {produto['nome']} | Quantidade: {produto['quantidade']}")
 
-            confirmacao = input("Deseja realmente excluir este produto? (s/n)").strip().lower()
+                confirmacao = input("Deseja realmente excluir este produto? (s/n): ").strip().lower()
 
-            if confirmacao == "s":
-                produtos.remove(produto)
-                salvar_produtos()
-                print("Produto excluído com sucesso!")
-            else:
-                print("Exclusão cancelada.")
+                if confirmacao == "s":
+                    produtos.remove(produto)
+                    salvar_produtos()
+                    print("Produto excluído com sucesso!")
+                else:
+                    print("Exclusão cancelada.")
+
+                if not deseja_repetir("\nDeseja excluir outro produto? (s/n): "):
+                    voltar_ao_menu()
+                    return
                 
-            voltar_ao_menu()
-            return
-        
-    print("Produto não encontrado.")
-    voltar_ao_menu()
+                break
 
+        if not encontrado:
+            print("Produto não encontrado.")
+
+            if not deseja_repetir("\nDeseja tentar outro produto? (s/n): "):
+                voltar_ao_menu()
+                return
+    
 
 # CONTROLE DO MENU
 
