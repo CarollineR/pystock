@@ -27,10 +27,25 @@ def ler_inteiro(mensagem):
         
         try:
             valor = int(valor)
+
+            if valor < 0:
+                print("Digite um valor maior ou igual a zero.")
+                continue
+
             return valor
 
         except ValueError:
             print("Digite um número válido.")
+            
+
+def ler_texto(mensagem):
+    while True:
+        valor = input(mensagem).strip()
+
+        if valor:
+            return valor.title()
+        
+        print("O campo não pode ficar vazio")
 
 
 # FUNÇÕES DE APRESENTAÇÃO
@@ -68,7 +83,7 @@ def opcao_invalida():
 # FUNCIONALIDADES DO ESTOQUE
 
 def cadastrar_produto():
-    nome = input("Digite o nome do produto: ").strip().title()
+    nome = ler_texto("Digite o nome do produto: ")
 
     for produto in produtos:
         if produto["nome"].lower() == nome.lower():
