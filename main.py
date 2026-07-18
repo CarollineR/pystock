@@ -48,8 +48,9 @@ def exibir_opcoes():
     print("2. Listar Produtos")
     print("3. Entrada de Estoque")
     print("4. Saída de Estoque")
-    print("5. Excluir Produto")
-    print("6. Sair")
+    print("5. Buscar Produto")
+    print("6. Excluir Produto")
+    print("7. Sair")
 
 
 def voltar_ao_menu():
@@ -97,6 +98,19 @@ def listar_produtos():
 
     for produto in produtos:
         print(f"\n Nome: {produto['nome']} | Quantidade: {produto['quantidade']}")
+    voltar_ao_menu()
+
+def buscar_produto():
+    nome_busca = input("Digite o nome do produto: ").strip()
+
+    for produto in produtos:
+        if produto["nome"].lower() == nome_busca.lower():
+            print("\nProduto encontrado: ")
+            print(f"Nome: {produto['nome']} | Quantidade: {produto['quantidade']}")
+            voltar_ao_menu()
+            return
+        
+    print("Produto não encontrado.")
     voltar_ao_menu()
     
 
@@ -172,9 +186,12 @@ def escolher_opcoes():
         saida_de_estoque()
         return True
     elif opcao == 5:
-        excluir_produto()
+        buscar_produto()
         return True
     elif opcao == 6:
+        excluir_produto()
+        return True
+    elif opcao == 7:
         sair()
         return False
     else:
