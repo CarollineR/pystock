@@ -122,9 +122,17 @@ def listar_produtos():
     
     print("\n Produtos cadastrados:\n")
 
+    total_unidades = 0
+
     for produto in produtos:
         print(f"\n Nome: {produto['nome']} | Quantidade: {produto['quantidade']}")
+        total_unidades += produto["quantidade"]
+
+    print("\n------------------------------")
+    print(f"Total de produtos: {len(produtos)}")
+    print(f"Total de unidades em estoque: {total_unidades}")
     voltar_ao_menu()
+
 
 def buscar_produto():
     nome_busca = input("Digite o nome do produto: ").strip()
@@ -150,6 +158,7 @@ def entrada_de_estoque():
             produto["quantidade"] += quantidade
             salvar_produtos()
             print("Estoque atualizado!")
+            print(f"Estoque atual de {produto['nome']}: {produto['quantidade']} unidade(s).")
             voltar_ao_menu()
             return
         
