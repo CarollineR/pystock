@@ -36,7 +36,18 @@ def ler_inteiro(mensagem):
 
         except ValueError:
             print("Digite um número válido.")
-            
+
+def ler_inteiro_positivo(mensagem):
+    while True:
+        valor = ler_inteiro(mensagem)
+
+        if valor == 0:
+            print("Digite um valor maior que zero.")
+            continue
+
+        return valor
+
+
 
 def ler_texto(mensagem):
     while True:
@@ -135,7 +146,7 @@ def entrada_de_estoque():
     for produto in produtos:
 
         if produto["nome"].lower() == nome.lower():
-            quantidade = ler_inteiro("Quantidade: ")
+            quantidade = ler_inteiro_positivo("Quantidade: ")
             produto["quantidade"] += quantidade
             salvar_produtos()
             print("Estoque atualizado!")
@@ -152,7 +163,7 @@ def saida_de_estoque():
     for produto in produtos:
 
         if produto["nome"].lower() == nome.lower():
-            quantidade = ler_inteiro("Digite a quantidade que deseja retirar: ")
+            quantidade = ler_inteiro_positivo("Digite a quantidade que deseja retirar: ")
 
             if produto["quantidade"] < quantidade:
                 print("Estoque insuficiente")
@@ -174,9 +185,19 @@ def excluir_produto():
     for produto in produtos:
 
         if produto["nome"].lower() == nome.lower():
-            produtos.remove(produto)
-            salvar_produtos()
-            print("Produto excluído com sucesso!")
+
+            print("\nProduto encontrado: ")
+            print(f"Nome: {produto['nome']} | Quantidade: {produto['quantidade']}")
+
+            confirmacao = input("Deseja realmente excluir este produto? (s/n)").strip().lower()
+
+            if confirmacao == "s":
+                produtos.remove(produto)
+                salvar_produtos()
+                print("Produto excluído com sucesso!")
+            else:
+                print("Exclusão cancelada.")
+                
             voltar_ao_menu()
             return
         
