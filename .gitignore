@@ -1,0 +1,14 @@
+# Arquivos compilados do Python
+__pycache__/
+*.pyc
+
+# Ambiente virtual
+venv/
+.venv/
+
+# Configurações do VS Code
+.vscode/
+
+# Arquivos do sistema
+Thumbs.db
+.DS_Store
