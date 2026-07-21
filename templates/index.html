@@ -6,17 +6,24 @@
 
 <p>Sistema de gerenciamento de estoque.</p>
 
-<div>
-    <h3>Total de Produtos</h3>
-    <p>0</p>
+<div class="cards">
+    <div class="card">
+        <h3>Total de Produtos</h3>
+        <p>0</p>
+    </div>
+    <div class="card">
+        <h3>Total em Estoque</h3>
+        <p>0</p>
+    </div>
 </div>
 
-<div>
-    <h3>Total em Estoque</h3>
-    <p>0</p>
+<div class="actions">
+    <a href="{{ url_for('produtos') }}" class="btn">
+    Ver Produtos
+    </a>
+    <a href="{{ url_for('cadastro') }}" class="btn">
+    Cadastrar Produto
+    </a>
 </div>
-
-<button>Ver Produtos</button>
-<button>Cadastrar Produto</button>
 
 {% endblock %}
