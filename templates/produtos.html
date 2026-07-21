@@ -4,6 +4,22 @@
 
 <h2>Produtos</h2>
 
-<p>Aqui serão exibidos os produtos cadastrados.</p>
+<table>
+
+    <tr>
+        <th>Produto</th>
+        <th>Quantidade</th>
+    </tr>
+
+    {% for produto in produtos %}
+
+    <tr>
+        <td>{{ produto["nome"] }}</td>
+        <td>{{ produto["quantidade"] }}</td>
+    </tr>
+
+    {% endfor %}
+
+</table>
 
 {% endblock %}

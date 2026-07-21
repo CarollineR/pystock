@@ -1,6 +1,21 @@
 from flask import Flask, render_template, request
+import json
 
 app = Flask(__name__)
+
+ARQUIVO = "produtos.json"
+
+def carregar_produtos():
+    try:
+        with open(ARQUIVO, "r", encoding="utf-8") as arquivo:
+            return json.load(arquivo)
+    except FileNotFoundError:
+        return []
+    
+
+def salvar_produtos(produtos):
+    with open(ARQUIVO, "w", encoding="utf-8") as arquivo:
+        json.dump(produtos, arquivo, indent=4, ensure_ascii=False)
 
 
 @app.route("/")
@@ -9,15 +24,29 @@ def index():
 
 @app.route("/produtos")
 def produtos():
-    return render_template("produtos.html")
+    lista_produtos = carregar_produtos()
+
+    return render_template(
+        "produtos.html",
+        produtos=lista_produtos
+    )
 
 @app.route("/cadastro", methods=["GET", "POST"])
 def cadastro():
     if request.method == "POST":
         nome = request.form["nome"]
-        quantidade = request.form["quantidade"]
-        print(nome)
-        print(quantidade)
+        quantidade = int(request.form["quantidade"])
+
+        produtos = carregar_produtos()
+
+        novo_produto = {
+            "nome": nome,
+            "quantidade": quantidade
+        }
+
+        produtos.append(novo_produto)
+
+        salvar_produtos(produtos)
         
     return render_template("cadastro.html")
 
