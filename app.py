@@ -1,7 +1,9 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, flash
 import json
 
 app = Flask(__name__)
+
+app.secret_key = "pystock-chave"
 
 ARQUIVO = "produtos.json"
 
@@ -47,6 +49,9 @@ def cadastro():
         produtos.append(novo_produto)
 
         salvar_produtos(produtos)
+
+        flash("Produto cadastrado com sucesso!")
+        return redirect("/produtos")
         
     return render_template("cadastro.html")
 

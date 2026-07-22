@@ -2,5 +2,9 @@
     {
         "nome": "mouse",
         "quantidade": 10
+    },
+    {
+        "nome": "teclado",
+        "quantidade": 5
     }
 ]
