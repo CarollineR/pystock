@@ -36,10 +36,28 @@ def produtos():
 @app.route("/cadastro", methods=["GET", "POST"])
 def cadastro():
     if request.method == "POST":
-        nome = request.form["nome"]
-        quantidade = int(request.form["quantidade"])
+        nome = request.form["nome"].strip().title()
+
+        try:
+            quantidade = int(request.form["quantidade"])
+        except ValueError:
+            flash("Digite uma quantidade válida.")
+            return("/cadastro")
+        
+        if quantidade < 0:
+            flash("A quantidade não pode ser negativa.")
+            return redirect("/cadastro")
+
+        if not nome:
+            flash("O nome do produto é obrigatório.")
+            return redirect("/cadastro")
 
         produtos = carregar_produtos()
+
+        for produto in produtos:
+            if produto["nome"].lower() ==nome.lower():
+                flash("Este produto já está cadastrado.")
+                return redirect("/cadastro")
 
         novo_produto = {
             "nome": nome,
