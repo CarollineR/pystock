@@ -1,34 +1,29 @@
 # 📦 PyStock
 
-Sistema de controle de estoque desenvolvido em Python com foco em aprendizado de lógica de programação, organização de código e boas práticas.
+Sistema de gerenciamento de estoque desenvolvido em Python.
+
+Este projeto nasceu como uma forma de praticar lógica de programação,
+organização de código e persistência de dados.
+
 
 ## Funcionalidades
 
 - Cadastro de produtos
 - Listagem de produtos
-- Busca por produto
 - Entrada de estoque
 - Saída de estoque
+- Busca de produtos
 - Exclusão de produtos
-- Persistência de dados em JSON
+- Persistência dos dados em arquivo JSON
+- Validação de entradas
 
-## Tecnologias
 
-- Python 3
+## Tecnologias utilizadas
+
+- Python
 - JSON
+- Git/GitHub
 
-## Estrutura do projeto
-
-```
-PyStock/
-│
-├── main.py
-├── estoque.py
-├── database.py
-├── utils.py
-├── produtos.json
-└── README.md
-```
 
 ## Objetivos futuros
 
