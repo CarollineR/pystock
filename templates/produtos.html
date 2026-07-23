@@ -4,6 +4,8 @@
 
 <h2>Produtos</h2>
 
+{% if produtos %}
+
 <table>
 
     <tr>
@@ -21,5 +23,15 @@
     {% endfor %}
 
 </table>
+
+{% else %}
+
+<p>Nenhum produto cadastrado até o momento.</p>
+
+{% endif %}
+
+<br>
+
+<a href="/cadastro">Cadastrar Produto</a>
 
 {% endblock %}

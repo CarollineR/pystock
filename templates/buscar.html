@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Buscar Produto</h2>
+
+<form method="POST">
+
+    <label for="nome">Nome do Produto</label><br>
+    <input type="text" id="nome" name="nome"><br><br>
+
+    <button type="submit">Buscar</button>
+
+</form>
+
+{% if produto %}
+
+<h3>Resultado da Busca</h3>
+
+<p><strong>Nome:</strong> {{ produto["nome"] }} </p>
+
+<p><strong>Quantidade:</strong> {{ produto["quantidade"] }}</p>
+
+{% endif %}
+
+<br>
+
+<a href="/produtos">Ver Produtos</a>
+<a href="/">Página Inicial</a>
+
+{% endblock %}

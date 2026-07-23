@@ -15,15 +15,15 @@
 
     {% with mensagens = get_flashed_messages() %}
 
-    {% if mensagens %}
+        {% if mensagens %}
 
-        {% for mensagem in mensagens %}
-            <p>{{ mensagem }}</p>
-        {% endfor %}
+            {% for mensagem in mensagens %}
+                <p>{{ mensagem }}</p>
+            {% endfor %}
 
-    {% endif %}
+        {% endif %}
 
-{% endwith %}
+    {% endwith %}
 
     <main>
         {% block content %}
