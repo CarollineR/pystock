@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, flash
+from flask import Flask, render_template, request, redirect, url_for, flash
 import json
 
 app = Flask(__name__)
@@ -79,6 +79,7 @@ def cadastro():
 
 @app.route("/buscar", methods=["GET", "POST"])
 def buscar():
+
     if request.method == "POST":
         nome_busca = request.form["nome"].strip()
 
@@ -99,6 +100,40 @@ def buscar():
         return redirect("/buscar")
     
     return render_template("buscar.html")
+
+@app.route("/entrada", methods=["GET", "POST"])
+def entrada():
+
+    if request.method == "POST":
+
+        nome = request.form["nome"].strip().title()
+
+        try:
+            quantidade = int(request.form["quantidade"])
+
+            if quantidade <= 0:
+                flash("A quantidade deve ser maior que zero.")
+                return redirect(url_for("entrada"))
+
+        except ValueError:
+            flash("Digite uma quantidade válida.")
+            return redirect(url_for("entrada"))
+
+        produtos = carregar_produtos()
+
+        for produto in produtos:
+            if produto["nome"] == nome:
+                produto["quantidade"] += quantidade
+
+                salvar_produtos(produtos)
+
+                flash("Entrada de estoque registrada com sucesso!")
+                return redirect(url_for("entrada"))
+
+        flash("Produto não encontrado.")
+        return redirect(url_for("entrada"))
+
+    return render_template("entrada.html")
 
 
 if __name__ == "__main__":
