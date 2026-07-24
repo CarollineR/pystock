@@ -32,7 +32,13 @@
 
 <br>
 
-<a href="/cadastro">Cadastrar Produto</a>
+<a href="{{ url_for('cadastro') }}" class="btn">
+    Cadastrar Produto
+</a>
+
+<a href="{{ url_for('excluir') }}" class="btn">
+    Excluir Produto
+</a>
 
 <a href="{{ url_for('index') }}">Voltar ao Menu</a>
 

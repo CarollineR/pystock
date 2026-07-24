@@ -111,7 +111,11 @@ def entrada():
         try:
             quantidade = int(request.form["quantidade"])
 
-            if quantidade <= 0:
+            if quantidade < 0:
+                flash("Digite uma quantidade válida")
+                return redirect(url_for("entrada"))
+
+            if quantidade == 0:
                 flash("A quantidade deve ser maior que zero.")
                 return redirect(url_for("entrada"))
 
@@ -134,6 +138,95 @@ def entrada():
         return redirect(url_for("entrada"))
 
     return render_template("entrada.html")
+
+
+@app.route("/saida", methods=["GET", "POST"])
+def saida():
+
+    if request.method == "POST":
+
+        nome = request.form["nome"].strip().title()
+
+        try:
+            quantidade = int(request.form["quantidade"])
+
+            if quantidade < 0:
+                flash("Digite uma quantidade válida.")
+                return redirect(url_for("saida"))
+
+            if quantidade == 0:
+                flash("A quantidade deve ser maior que zero.")
+                return redirect(url_for("saida"))
+
+        except ValueError:
+            flash("Digite uma quantidade válida.")
+            return redirect(url_for("saida"))
+
+        produtos = carregar_produtos()
+
+        for produto in produtos:
+            if produto["nome"] == nome:
+
+                if quantidade > produto["quantidade"]:
+                    flash("Quantidade insuficiente em estoque.")
+                    return redirect(url_for("saida"))
+
+                produto["quantidade"] -= quantidade
+
+                salvar_produtos(produtos)
+
+                flash("Saída de estoque registrada com sucesso.")
+                return redirect(url_for("saida"))
+
+        flash("Produto não encontrado.")
+        return redirect(url_for("saida"))
+
+    return render_template("saida.html")
+
+
+@app.route("/excluir", methods=["GET", "POST"])
+def excluir():
+
+    if request.method == "POST":
+
+        nome = request.form["nome"].strip().title()
+
+        if not nome:
+            flash("O nome do produto é obrigatório.")
+            return redirect(url_for("excluir"))
+
+        produtos = carregar_produtos()
+
+        for produto in produtos:
+            if produto["nome"] == nome:
+
+                return render_template(
+                    "confirmar_exclusao.html",
+                    produto=produto
+                )
+        flash("Produto não encontrado.")
+        return redirect(url_for('excluir'))
+
+    return render_template("excluir.html")
+
+@app.route("/confirmar_exclusao", methods=["POST"])
+def confirmar_exclusao():
+
+    nome = request.form["nome"]
+
+    produtos = carregar_produtos()
+
+    for produto in produtos:
+        if produto["nome"] == nome:
+            produtos.remove(produto)
+
+            salvar_produtos(produtos)
+
+            flash("Produto excluído com sucesso!")
+            return redirect(url_for("excluir"))
+
+    flash("Produto não encontrado.")
+    return redirect(url_for("excluir"))
 
 
 if __name__ == "__main__":

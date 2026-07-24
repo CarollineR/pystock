@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Excluir Produto</h2>
+
+<form method="POST">
+
+    <label for="nome">Nome do Produto:</label>
+    <input type="text" name="nome" id="nome" required>
+
+    <button type="submit">
+        Buscar Produto
+    </button>
+</form>
+
+<a href="{{ url_for('produtos') }}" class="btn">
+        Ver Produtos
+</a>
+
+<a href="{{ url_for('index') }}">
+    Voltar ao Menu
+</a>
+
+{% endblock %}

@@ -98,3 +98,13 @@ input {
     box-sizing: border-box;
 }
 
+.actions {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.actions form {
+    margin: 0;
+}
+

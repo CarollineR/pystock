@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Confirmar Exclusão</h2>
+
+<p>Deseja mesmo excluir o produto?</p>
+
+<p>
+    <strong>Produto:</strong> {{ produto.nome }}
+</p>
+
+<p>
+    <strong>Quantidade em estoque:</strong> {{ produto.quantidade }}
+</p>
+
+<div class="actions">
+
+    <form method="POST" action="{{ url_for('confirmar_exclusao') }}">
+
+        <input type="hidden" name="nome" value="{{ produto.nome }}">
+
+        <button type="submit">
+            Confirmar Exclusão
+        </button>
+
+    </form>
+
+    <a href="{{ url_for('index') }}">
+        Cancelar
+    </a>
+
+</div>
+
+{% endblock %}

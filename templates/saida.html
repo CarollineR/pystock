@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Saída de Estoque</h2>
+
+<form method="POST">
+
+    <label for="nome">Nome do Produto:</label>
+    <input type="text" name="nome" id="nome" required>
+
+    <label for="quantidade">Quantidade:</label>
+    <input type="number" name="quantidade" id="quantidade" required>
+
+    <button type="submit">
+        Registrar Saída
+    </button>
+
+</form>
+
+<a href="{{ url_for('index') }}">
+        Voltar ao Menu
+</a>
+
+<a href="{{ url_for('produtos') }}">
+    Ver Produtos
+</a>
+
+{% endblock %}

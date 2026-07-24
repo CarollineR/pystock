@@ -1,1 +1,10 @@
-[]
+[
+    {
+        "nome": "Mouse",
+        "quantidade": 10
+    },
+    {
+        "nome": "Notebook",
+        "quantidade": 10
+    }
+]
